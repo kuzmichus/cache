@@ -1,2 +1,2 @@
 # cache
-Обёртка для doctrine/cache совместимая с PSR7
+Обёртка для doctrine/cache совместимая с PSR6
