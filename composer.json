@@ -1,0 +1,25 @@
+{
+  "name": "kuzmich/cache",
+  "description": "Обёртка для doctrine/cache совместимая с PSR6",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sergey V. Kuzin",
+      "email": "sergey@kuzin.name"
+    }
+  ],
+  "require": {
+    "doctrine/cache": "^1.4.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Psr\\Cache\\": "src/Psr/Cache",
+      "Cache\\": "src"
+    }
+  },
+  "extra": {
+     "branch-alias": {
+       "dev-master": "0.1.x-dev"
+     }
+   }
+}
