@@ -10,8 +10,10 @@
       "role": "Developer"
     }
   ],
+  "require": {
+    "php": ">=5.5"
+  },
   "require-dev": {
-    "php": ">=5.5.0",
     "doctrine/cache": "^1.3"
   },
   "provide": {
