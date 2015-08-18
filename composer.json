@@ -1,15 +1,27 @@
 {
   "name": "kuzmich/cache",
   "description": "Обёртка для doctrine/cache совместимая с PSR6",
+  "keywords": ["psr", "cache", "caching", "key", "value", "store", "psr6", "psr-6", "psr-cache", "doctrine"],
   "license": "MIT",
   "authors": [
     {
       "name": "Sergey V. Kuzin",
-      "email": "sergey@kuzin.name"
+      "email": "sergey@kuzin.name",
+      "role": "Developer"
     }
   ],
-  "require": {
-    "doctrine/cache": "^1.4.1"
+  "require-dev": {
+    "php": ">=5.5.0",
+    "doctrine/cache": "^1.3"
+  },
+  "provide": {
+    "psr/cache-implementation": "1.0.0"
+  },
+  "suggest": {
+    "doctrine/cache": ""
+  },
+  "replace": {
+    "psr/cache": "1.0.0"
   },
   "autoload": {
     "psr-4": {

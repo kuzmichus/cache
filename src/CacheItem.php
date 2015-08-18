@@ -3,22 +3,35 @@
  *
  * PHP version 5.5
  *
- * @package Psr\Cache
+ * @package Cache
  * @author  Sergey V.Kuzin <sergey@kuzin.name>
  * @license MIT
  */
 
-namespace Psr\Cache;
+namespace Cache;
 
-class NullCacheItem implements CacheItemInterface
+//include __DIR__ . '/Psr/Cache/CacheItemInterface.php';
+
+use Psr\Cache\CacheItemInterface;
+
+class CacheItem implements CacheItemInterface
 {
     protected $key;
-    protected $value = null;
 
-    public function __construct($key)
+    protected $value;
+
+    protected $expiration;
+
+    protected $hit;
+
+    public function __construct($key, $ttl = null, $hit = false)
     {
         $this->key = $key;
+        $this->setExpiration($ttl);
+
+        $this->setHit($hit);
     }
+
 
     /**
      * Returns the key for the current cache item.
@@ -78,8 +91,9 @@ class NullCacheItem implements CacheItemInterface
      */
     public function set($value, $ttl = null)
     {
-        $this->value;
-        return $this;
+        $this->value = $value;
+
+        $this->setExpiration($ttl);
     }
 
     /**
@@ -93,7 +107,7 @@ class NullCacheItem implements CacheItemInterface
      */
     public function isHit()
     {
-        return false;
+        return $this->hit;
     }
 
     /**
@@ -108,7 +122,7 @@ class NullCacheItem implements CacheItemInterface
      */
     public function exists()
     {
-        return false;
+        return $this->isHit();
     }
 
     /**
@@ -125,6 +139,14 @@ class NullCacheItem implements CacheItemInterface
      */
     public function expiresAt($expiration)
     {
+        if ($expiration instanceof \DateTime) {
+            $this->expiration = $expiration;
+        } elseif ($expiration instanceof \DateTimeImmutable) {
+            $this->expiration = $this->expiration = $expiration;
+        } else {
+            throw new InvalidArgumentException();
+        }
+
         return $this;
     }
 
@@ -141,6 +163,14 @@ class NullCacheItem implements CacheItemInterface
      */
     public function expiresAfter($time)
     {
+        if (true === is_numeric($time)) {
+            $this->expiration = new \DateTime('now +' . $time . ' seconds');
+        } elseif ($time instanceof \DateInterval) {
+            $this->expiration = new \DateTime('now +' . $time->format('U') . ' seconds');
+        } else {
+            throw new InvalidArgumentException();
+        }
+
         return $this;
     }
 
@@ -155,6 +185,39 @@ class NullCacheItem implements CacheItemInterface
      */
     public function getExpiration()
     {
-        return new \DateTime();
+        return $this->expiration;
+    }
+
+    /**
+     * @param null $ttl
+     * @return $this
+     */
+    public function setExpiration($ttl = null)
+    {
+        if (true === is_numeric($ttl)) {
+            $this->expiration = new \DateTime('now +' . $ttl . ' seconds');
+        } elseif ($ttl instanceof \DateTime) {
+            $this->expiration = $ttl;
+        } elseif (null === $ttl) {
+            $this->expiration = new \DateTime('now + 10 years');
+        } else {
+            throw new InvalidArgumentException();
+        }
+        return $this;
+    }
+
+    /**
+     * @param boolean $hit
+     *
+     * @return CacheItem
+     * @throws InvalidArgumentException not a boolean value given
+     */
+    public function setHit($hit)
+    {
+        /*        if (false === is_bool($hit)) {
+            throw InvalidArgumentException::typeMismatch($hit, 'Boolean');
+        }*/
+        $this->hit = $hit;
+        return $this;
     }
 }

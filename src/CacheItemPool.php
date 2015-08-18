@@ -3,15 +3,31 @@
  *
  * PHP version 5.5
  *
- * @package Psr\Cache
+ * @package Cache
  * @author  Sergey V.Kuzin <sergey@kuzin.name>
  * @license MIT
  */
 
-namespace Psr\Cache;
+namespace Cache;
 
-class NullCacheItemPool implements CacheItemPoolInterface
+//include __DIR__ . '/Psr/Cache/CacheItemPoolInterface.php';
+
+use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
+
+class CacheItemPool implements CacheItemPoolInterface
 {
+    /** @var \Doctrine\Common\Cache\CacheProvider  */
+    protected $provider;
+
+    /** @var array|CacheItemInterface[] */
+    private $deferred = [];
+
+    public function __construct(\Doctrine\Common\Cache\CacheProvider $provider)
+    {
+        $this->provider = $provider;
+    }
+
     /**
      * Returns a Cache Item representing the specified key.
      *
@@ -28,7 +44,23 @@ class NullCacheItemPool implements CacheItemPoolInterface
      */
     public function getItem($key)
     {
-        return new NullCacheItem($key);
+        if (isset($this->deferred[$key])) {
+            return $this->deferred[$key];
+        }
+
+        if (false === $this->provider->contains($key)) {
+            return new CacheItem($key);
+        }
+
+        $item = $this->provider->fetch($key);
+        //$item->setHit(true);
+
+        //$item = new CacheItem($key);
+
+        //$item->set($this->provider->fetch($key));
+        $item->setHit(true);
+
+        return $item;
     }
 
     /**
@@ -44,7 +76,24 @@ class NullCacheItemPool implements CacheItemPoolInterface
      */
     public function getItems(array $keys = array())
     {
-        // TODO: Implement getItems() method.
+        if (true === empty($keys)) {
+            return [];
+        }
+
+        /*$results = $this->provider->fetchMultiple($keys);
+        $items= [];
+        foreach($results as $key => $result) {
+            $item = new CacheItem($key);
+            $item->set($result);
+            $item->setProvider($this->provider);
+            $items[] = $item;
+        }*/
+        $items = [];
+        foreach ($keys as $key) {
+            $items[$key] = $this->getItem($key);
+        }
+
+        return $items;
     }
 
     /**
@@ -55,7 +104,7 @@ class NullCacheItemPool implements CacheItemPoolInterface
      */
     public function clear()
     {
-        return true;
+        return $this->provider->flushAll();
     }
 
     /**
@@ -68,6 +117,11 @@ class NullCacheItemPool implements CacheItemPoolInterface
      */
     public function deleteItems(array $keys)
     {
+        foreach ($keys as $key) {
+            if (true === $this->provider->contains($key)) {
+                $this->provider->delete($key);
+            }
+        }
         return $this;
     }
 
@@ -82,6 +136,8 @@ class NullCacheItemPool implements CacheItemPoolInterface
      */
     public function save(CacheItemInterface $item)
     {
+        $this->doSave($item);
+
         return $this;
     }
 
@@ -95,6 +151,8 @@ class NullCacheItemPool implements CacheItemPoolInterface
      */
     public function saveDeferred(CacheItemInterface $item)
     {
+        $this->deferred[$item->getKey()] = $item;
+
         return $this;
     }
 
@@ -106,6 +164,24 @@ class NullCacheItemPool implements CacheItemPoolInterface
      */
     public function commit()
     {
-        return true;
+        $result = true;
+        foreach ($this->deferred as $key => $deferred) {
+            $saveResult = $this->doSave($deferred);
+            if (true === $saveResult) {
+                unset($this->deferred[$key]);
+            }
+            $result = $result && $saveResult;
+        }
+        return $result;
+    }
+
+    private function doSave(CacheItemInterface $item)
+    {
+        $now = new \DateTime();
+        $ttl = $item->getExpiration()->format('U') - $now->format('U');
+        if ($ttl < 0) {
+            return false;
+        }
+        return $this->provider->save($item->getKey(), $item, $ttl);
     }
 }
