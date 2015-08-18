@@ -14,6 +14,6 @@ class FilesystemCache extends CacheItemPool
 {
     public function __construct($directory, $extension = \Doctrine\Common\Cache\FilesystemCache::EXTENSION)
     {
-        return parent::__construct(new \Doctrine\Common\Cache\FilesystemCache($directory, $extension));
+        parent::__construct(new \Doctrine\Common\Cache\FilesystemCache($directory, $extension));
     }
 }

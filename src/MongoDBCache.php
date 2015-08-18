@@ -17,6 +17,6 @@ class MongoDBCache extends CacheItemPool
 {
     public function __construct(MongoCollection $collection)
     {
-        return parent::__construct(new \Doctrine\Common\Cache\MongoDBCache($collection));
+        parent::__construct(new \Doctrine\Common\Cache\MongoDBCache($collection));
     }
 }

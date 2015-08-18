@@ -16,6 +16,6 @@ class RiakCache extends CacheItemPool
 {
     public function __construct(Bucket $bucket)
     {
-        return parent::__construct(new \Doctrine\Common\Cache\RiakCache($bucket));
+        parent::__construct(new \Doctrine\Common\Cache\RiakCache($bucket));
     }
 }

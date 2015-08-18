@@ -14,6 +14,6 @@ class ZendDataCache extends CacheItemPool
 {
     public function __construct()
     {
-        return parent::__construct(new \Doctrine\Common\Cache\ZendDataCache());
+        parent::__construct(new \Doctrine\Common\Cache\ZendDataCache());
     }
 }

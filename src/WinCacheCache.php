@@ -14,6 +14,6 @@ class WinCacheCache extends CacheItemPool
 {
     public function __construct()
     {
-        return parent::__construct(new \Doctrine\Common\Cache\WinCacheCache());
+        parent::__construct(new \Doctrine\Common\Cache\WinCacheCache());
     }
 }

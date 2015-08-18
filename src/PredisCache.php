@@ -16,6 +16,6 @@ class PredisCache extends CacheItemPool
 {
     public function __construct(Client $client)
     {
-        return parent::__construct(new \Doctrine\Common\Cache\PredisCache($client));
+        parent::__construct(new \Doctrine\Common\Cache\PredisCache($client));
     }
 }

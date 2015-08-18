@@ -16,7 +16,7 @@ class CouchbaseCache extends CacheItemPool
 {
     public function __construct()
     {
-        return parent::__construct(new \Doctrine\Common\Cache\CouchbaseCache());
+        parent::__construct(new \Doctrine\Common\Cache\CouchbaseCache());
     }
 
     /**

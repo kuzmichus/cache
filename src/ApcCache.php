@@ -14,6 +14,6 @@ class ApcCache extends CacheItemPool
 {
     public function __construct()
     {
-        return parent::__construct(new \Doctrine\Common\Cache\ApcCache());
+        parent::__construct(new \Doctrine\Common\Cache\ApcCache());
     }
 }

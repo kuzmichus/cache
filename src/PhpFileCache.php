@@ -14,6 +14,6 @@ class PhpFileCache extends CacheItemPool
 {
     public function __construct($directory, $extension = \Doctrine\Common\Cache\PhpFileCache::EXTENSION)
     {
-        return parent::__construct(new \Doctrine\Common\Cache\PhpFileCache($directory, $extension));
+        parent::__construct(new \Doctrine\Common\Cache\PhpFileCache($directory, $extension));
     }
 }

@@ -14,6 +14,6 @@ class XcacheCache extends CacheItemPool
 {
     public function __construct()
     {
-        return parent::__construct(new \Doctrine\Common\Cache\XcacheCache());
+        parent::__construct(new \Doctrine\Common\Cache\XcacheCache());
     }
 }

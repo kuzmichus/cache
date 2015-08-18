@@ -14,6 +14,6 @@ class ArrayCache extends CacheItemPool
 {
     public function __construct()
     {
-        return parent::__construct(new \Doctrine\Common\Cache\ArrayCache());
+        parent::__construct(new \Doctrine\Common\Cache\ArrayCache());
     }
 }

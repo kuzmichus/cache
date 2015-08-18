@@ -14,6 +14,6 @@ class VoidCache extends CacheItemPool
 {
     public function __construct()
     {
-        return parent::__construct(new \Doctrine\Common\Cache\VoidCache());
+        parent::__construct(new \Doctrine\Common\Cache\VoidCache());
     }
 }

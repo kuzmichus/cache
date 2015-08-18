@@ -16,6 +16,6 @@ class SQLite3Cache extends CacheItemPool
 {
     public function __construct(SQLite3 $sqlite, $table)
     {
-        return parent::__construct(new \Doctrine\Common\Cache\SQLite3Cache($sqlite, $table));
+        parent::__construct(new \Doctrine\Common\Cache\SQLite3Cache($sqlite, $table));
     }
 }
