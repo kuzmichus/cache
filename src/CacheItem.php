@@ -92,8 +92,8 @@ class CacheItem implements CacheItemInterface
     public function set($value, $ttl = null)
     {
         $this->value = $value;
-
         $this->setExpiration($ttl);
+        return $this;
     }
 
     /**
