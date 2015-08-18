@@ -10,8 +10,6 @@
 
 namespace Cache;
 
-//include __DIR__ . '/Psr/Cache/CacheItemInterface.php';
-
 use Psr\Cache\CacheItemInterface;
 
 class CacheItem implements CacheItemInterface

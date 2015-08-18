@@ -10,8 +10,6 @@
 
 namespace Cache;
 
-//include __DIR__ . '/Psr/Cache/CacheItemPoolInterface.php';
-
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -53,11 +51,6 @@ class CacheItemPool implements CacheItemPoolInterface
         }
 
         $item = $this->provider->fetch($key);
-        //$item->setHit(true);
-
-        //$item = new CacheItem($key);
-
-        //$item->set($this->provider->fetch($key));
         $item->setHit(true);
 
         return $item;
