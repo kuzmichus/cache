@@ -27,6 +27,14 @@ class CacheItemPool implements CacheItemPoolInterface
     }
 
     /**
+     * @return \Doctrine\Common\Cache\CacheProvider
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
      * Returns a Cache Item representing the specified key.
      *
      * This method must always return an ItemInterface object, even in case of

@@ -16,7 +16,7 @@ class RedisCache extends CacheItemPool
 {
     public function __construct()
     {
-        parent::__construct(new \Doctrine\Common\Cache\PredisCache());
+        parent::__construct(new \Doctrine\Common\Cache\RedisCache());
     }
 
     /**
