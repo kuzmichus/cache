@@ -10,16 +10,19 @@
 
 namespace Cache;
 
+//require_once '/www/smarty/vendor/kuzmich/cache/vendor/psr/cache-util/src/CachePoolDeferTrait.php';
+//require_once '/www/smarty/vendor/kuzmich/cache/vendor/psr/cache-util/src/BasicPoolTrait.php';
+
+use Fig\Cache\BasicPoolTrait;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 
 class CacheItemPool implements CacheItemPoolInterface
 {
+    use BasicPoolTrait;
     /** @var \Doctrine\Common\Cache\CacheProvider  */
     protected $provider;
-
-    /** @var array|CacheItemInterface[] */
-    private $deferred = [];
 
     public function __construct(\Doctrine\Common\Cache\CacheProvider $provider)
     {
@@ -184,5 +187,40 @@ class CacheItemPool implements CacheItemPoolInterface
             return false;
         }
         return $this->provider->save($item->getKey(), $item, $ttl);
+    }
+
+    /**
+     * Commits the specified cache items to storage.
+     *
+     * @param CacheItemInterface[] $items
+     *
+     * @return bool
+     *   TRUE if all provided items were successfully saved. FALSE otherwise.
+     */
+    protected function write(array $items)
+    {
+        // TODO: Implement write() method.
+    }
+
+    /**
+     * Confirms if the cache contains specified cache item.
+     *
+     * Note: This method MAY avoid retrieving the cached value for performance reasons.
+     * This could result in a race condition with CacheItemInterface::get(). To avoid
+     * such situation use CacheItemInterface::isHit() instead.
+     *
+     * @param string $key
+     *    The key for which to check existence.
+     *
+     * @throws InvalidArgumentException
+     *   If the $key string is not a legal value a \Psr\Cache\InvalidArgumentException
+     *   MUST be thrown.
+     *
+     * @return bool
+     *  True if item exists in the cache, false otherwise.
+     */
+    public function hasItem($key)
+    {
+        // TODO: Implement hasItem() method.
     }
 }
