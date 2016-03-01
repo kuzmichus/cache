@@ -13,7 +13,7 @@
   "require": {
     "php": ">=5.6",
     "psr/cache": "1.0.0",
-    "psr/cache-util": "1.0.x-dev"
+    "fig/cache-util": "1.0.x-dev"
   },
   "require-dev": {
     "doctrine/cache": "^1.3"

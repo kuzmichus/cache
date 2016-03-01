@@ -37,7 +37,7 @@ class MemcachedCache extends CacheItemPool
      * @return Memcached|null
      */
     public function getMemcached()
-    {
+    {var_dump($this->provider->getMemcached());
         return $this->provider->getMemcached();
     }
 }
